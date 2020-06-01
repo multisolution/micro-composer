@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Microfront Facade - IFRAME</title>
+        <script>
+            
+            window.addEventListener (
+                'increment', 
+                (ev) => {
+                    console.log(`Composer received: ${JSON.stringify(ev.detail)}`)
+                    console.log(ev.target)
+                    console.log(ev.currentTarget)
+                    repeater(ev)
+                }
+            )
+
+            function repeater(ev) {
+                var iframes = document.getElementsByTagName('iframe')
+                for(var i = 0;  i < iframes.length; i++){
+                    iframes[i].contentWindow.dispatchEvent(
+                        new CustomEvent(
+                            'increment', 
+                            {
+                                detail : ev.detail
+                            }
+                        )
+                    )
+                }
+            }
+
+            function counter (val) {
+                var dt = document.getElementById('total');
+                dt.innerHTML = parseInt(dt.innerHTML)+val 
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'increment', 
+                        { detail: { target: 'facade', value: dt.innerHTML, origin: 'composer' } }
+                    )
+                )
+            }
+        </script>
+    </head>
+    <body>
+        <iframe src="http://localhost:8090/angular"></iframe>
+        <iframe src="http://localhost:8090/vue"></iframe>
+        <hr>
+        <button onclick="counter(-1)" >-</button>
+        <span id="total">0</span>
+        <button onclick="counter( 1)" >+</button>
+    </body>
+</html>
