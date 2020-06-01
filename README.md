@@ -90,6 +90,15 @@ function repeater(ev) {
 
 ```
 
+## Para rodar o teste 
+
+Suba os dois microfrontends e execute:
+```
+docker-compose up
+``` 
+
+
+
 ---
 
 
